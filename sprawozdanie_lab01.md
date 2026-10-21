@@ -2,7 +2,7 @@
 
 **Przedmiot:** Uczenie głębokie w systemach rozpoznawania i przetwarzania mowy  
 **Zajęcia nr / temat:** Laboratorium 01 — Sekwencje i sygnał mowy: od fali dźwiękowej do reprezentacji  
-**Autor / grupa:** Bartek / [Wpisz numer grupy]  
+**Autor / grupa:** Bartosz Paluda
 **Data:** 21.10.2026  
 
 ---
@@ -67,7 +67,7 @@ def oblicz_reprezentacje(y, sr, n_fft=N_FFT, hop_length=HOP_LENGTH, n_mels=N_MEL
 ## 3. Wyniki
 
 ### Zestawienie wymiarów reprezentacji
-Dla zarejestrowanych nagrań (odczyt z wykresów przy $T = 1 + \lfloor N / \text{hop\_length} \rfloor$):
+Dla zarejestrowanych nagrań 
 
 | Nagranie | Czas trwania [s] | Liczba próbek $N$ | Kształt Log-mel `[cechy, T]` | Kształt MFCC `[cechy, T]` | Układ dla RNN/Transformer `[T, cechy]` |
 |---|---|---|---|---|---|
@@ -76,9 +76,12 @@ Dla zarejestrowanych nagrań (odczyt z wykresów przy $T = 1 + \lfloor N / \text
 | **3. Zdanie** | $5,27\text{ s}$ | $84\ 320$ | `[64, 527]` | `[13, 527]` | `[527, 64]` / `[527, 13]` |
 
 *Wygenerowane wykresy:*
-- `samogłoska_wykres.png`
-- `wyraz_wykres.png`
-- `zdanie_wykres.png`
+- <img width="1500" height="1200" alt="samogłoska_wykres" src="https://github.com/user-attachments/assets/e09c291b-52bd-4d36-b501-559359057d49" />
+
+- <img width="1500" height="1200" alt="wyraz_wykres" src="https://github.com/user-attachments/assets/6e008c3a-c89e-4a11-92c9-1e64e13e8b5d" />
+
+- <img width="1500" height="1200" alt="zdanie_wykres" src="https://github.com/user-attachments/assets/23767b5e-e2d4-4de3-9168-721a3711282e" />
+
 
 ---
 
@@ -90,6 +93,7 @@ Badanie przeprowadzono przy stałym kroku `hop_length = 160` ($10\text{ ms}$) dl
   - `n_fft = 256` ($\Delta f = 62,50\text{ Hz}$): Pionowe granice wybuchów i przejść między głoskami (np. w okolicach $0,35\text{ s}$, $1,55\text{ s}$ i $3,10\text{ s}$) są ostre i precyzyjnie zlokalizowane. W osi pionowej harmoniczne zlewają się w jednolite, szerokie pasma formantowe.
   - `n_fft = 1024` ($\Delta f = 15,62\text{ Hz}$): W rejonach samogłoskowych (zwłaszcza w paśmie $0\text{–}2000\text{ Hz}$ w przedziale $0,50\text{–}0,75\text{ s}$) widoczne są wyraźne, odseparowane poziome prążki harmonicznych głosu. Zjawiska transjentowe (nagłe impulsy i zwarcia) uległy jednak poziomemu rozmyciu na szerokość $64\text{ ms}$.
   - `n_fft = 512` ($\Delta f = 31,25\text{ Hz}$): Zapewnia optymalny kompromis, oddając zarówno formanty samogłosek, jak i dostatecznie ostre krawędzie fonemów.
+<img width="1500" height="1200" alt="eksperyment_A" src="https://github.com/user-attachments/assets/affca5a3-8b9d-41a3-8856-2d35dad6e73c" />
 
 ---
 
@@ -101,6 +105,7 @@ Badanie przeprowadzono przy stałej długości okna `n_fft = 512` ($32\text{ ms}
   - `hop_length = 80`: Generuje $T = 1054$ ramek. Spektrogram jest wygładzony i ciągły w osi poziomej.
   - `hop_length = 160`: Generuje $T = 527$ ramek (standardowe $100\text{ ramek/s}$). Zapewnia pełną czytelność zjawisk fonetycznych.
   - `hop_length = 320`: Generuje $T = 264$ ramki. Obraz ulega widocznej pikselizacji (dyskretyzacji schodkowej w poziomie), a krótkie zjawiska fonetyczne (np. wybuchy zwarć) są reprezentowane przez zaledwie 1–2 ramki. Rozstaw prążków w pionie pozostaje we wszystkich trzech przypadkach identyczny.
+<img width="1500" height="1200" alt="eksperyment_B" src="https://github.com/user-attachments/assets/f0c469dd-a962-46aa-a0e3-8719a9ce78f4" />
 
 ---
 
@@ -134,9 +139,3 @@ Badanie przeprowadzono przy stałej długości okna `n_fft = 512` ($32\text{ ms}
    MFCC poprzez dekolerację za pomocą DCT silnie kompresuje obwiednię widmową do 13 cech, co było kluczowe w klasycznych modelach HMM/GMM. Jednak współczesne głębokie sieci neuronowe (CNN, Conformer, Whisper) preferują pełniejszy spektrogram log-mel ($64$ lub $80$ pasm), ponieważ same są w stanie wyuczyć się optymalnych filtrów i korelacji przestrzenno-czasowych bez strat informacji wprowadzanych przez obcięcie DCT.
 ```
 
----
-
-### Co zrobić z wygenerowanym plikiem:
-1. Skopiuj powyższy tekst i zapisz go jako `sprawozdanie_lab01.md` (lub wyeksportuj do pliku PDF, jeśli prowadzący tego wymaga).
-2. Uzupełnij w nagłówku swój numer grupy.
-3. Umieść wygenerowane wcześniej z Colaba pliki obrazków (`samogłoska_wykres.png`, `wyraz_wykres.png`, `zdanie_wykres.png`, `eksperyment_A.png`, `eksperyment_B.png`) w tym samym folderze / repozytorium GitHub.
