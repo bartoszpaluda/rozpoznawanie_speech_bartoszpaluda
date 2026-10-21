@@ -51,13 +51,10 @@ def wczytaj_audio(sciezka):
     return y.astype(np.float32), sr
 
 def oblicz_reprezentacje(y, sr, n_fft=N_FFT, hop_length=HOP_LENGTH, n_mels=N_MELS, n_mfcc=N_MFCC):
-    # Spektrogram mocy w pasmach mel
     S = librosa.feature.melspectrogram(
         y=y, sr=sr, n_fft=n_fft, hop_length=hop_length, n_mels=n_mels
     )
-    # Logarytmowanie mocy (dB)
     S_db = librosa.power_to_db(S, ref=np.max)
-    # Wyznaczenie MFCC z macierzy log-mel (wspólna baza)
     M = librosa.feature.mfcc(S=S_db, n_mfcc=n_mfcc)
     return S_db, M
 ```
