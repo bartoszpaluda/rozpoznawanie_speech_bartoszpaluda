@@ -17,6 +17,8 @@ W ramach ćwiczenia zrealizowano:
 3. Przeprowadzenie eksperymentów badających wpływ długości okna analizy (`n_fft` $\in \{256, 512, 1024\}$) oraz kroku ramkowania (`hop_length` $\in \{80, 160, 320\}$) na spektrogram, z weryfikacją kompromisu czasowo-częstotliwościowego (zasada nieoznaczoności Gabora).
 4. Analizę cech akustycznych widocznych w poszczególnych reprezentacjach w odniesieniu do zjawisk fonetycznych (formanty, harmoniczne, wybuchy zwarć, pauzy, koartykulacja).
 
+Link do github - https://github.com/bartoszpaluda/rozpoznawanie_speech_bartoszpaluda/tree/main
+
 ---
 
 ## 2. Metoda i implementacja
