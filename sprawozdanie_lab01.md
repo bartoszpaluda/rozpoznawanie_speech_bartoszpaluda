@@ -17,8 +17,6 @@ W ramach ćwiczenia zrealizowano:
 3. Przeprowadzenie eksperymentów badających wpływ długości okna analizy (`n_fft` $\in \{256, 512, 1024\}$) oraz kroku ramkowania (`hop_length` $\in \{80, 160, 320\}$) na spektrogram, z weryfikacją kompromisu czasowo-częstotliwościowego (zasada nieoznaczoności Gabora).
 4. Analizę cech akustycznych widocznych w poszczególnych reprezentacjach w odniesieniu do zjawisk fonetycznych (formanty, harmoniczne, wybuchy zwarć, pauzy, koartykulacja).
 
-Link do github - https://github.com/bartoszpaluda/rozpoznawanie_speech_bartoszpaluda/tree/main
-
 ---
 
 ## 2. Metoda i implementacja
@@ -34,32 +32,10 @@ Konfiguracja bazowa przetwarzania:
 - **Skala logarytmiczna:** przeliczenie mocy do decybeli za pomocą `librosa.power_to_db` z referencją `ref=np.max` ($0\text{ dB}$ odpowiada punktowi o maksymalnej energii w nagraniu, a dolna granica dynamiki wynosi $-80\text{ dB}$).
 - **Liczba współczynników MFCC (`N_MFCC`):** $13$ (wyliczanych za pomocą DCT typu II z wcześniej obliczonej macierzy log-mel, co zapewnia wspólną bazę filtrów mel i identyczną siatkę czasową).
 
-### Kod przetwarzania
+### Link do Github
+https://github.com/bartoszpaluda/rozpoznawanie_speech_bartoszpaluda/tree/main
 
-```python
-import numpy as np
-import librosa
-import librosa.display
-import matplotlib.pyplot as plt
 
-SR = 16000
-N_FFT = 512
-HOP_LENGTH = 160
-N_MELS = 64
-N_MFCC = 13
-
-def wczytaj_audio(sciezka):
-    y, sr = librosa.load(sciezka, sr=SR, mono=True)
-    return y.astype(np.float32), sr
-
-def oblicz_reprezentacje(y, sr, n_fft=N_FFT, hop_length=HOP_LENGTH, n_mels=N_MELS, n_mfcc=N_MFCC):
-    S = librosa.feature.melspectrogram(
-        y=y, sr=sr, n_fft=n_fft, hop_length=hop_length, n_mels=n_mels
-    )
-    S_db = librosa.power_to_db(S, ref=np.max)
-    M = librosa.feature.mfcc(S=S_db, n_mfcc=n_mfcc)
-    return S_db, M
-```
 
 ---
 
